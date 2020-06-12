@@ -56,7 +56,7 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.openButton);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Ultrawide Me!";
             this.ResumeLayout(false);
 
         }
