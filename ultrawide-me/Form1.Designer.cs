@@ -36,7 +36,7 @@
             // 
             this.openFileDialog.FileName = "gameFile";
             this.openFileDialog.Filter = "EXE Files|*.exe";
-            this.openFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
+            this.openFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.ProcessFile);
             // 
             // openButton
             // 
