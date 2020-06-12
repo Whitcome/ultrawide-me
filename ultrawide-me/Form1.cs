@@ -12,6 +12,9 @@ namespace ultrawide_me
     {
         private const string sixteenByNineHexValue = "39-8E-E3-3F";
 
+        private byte[] openedFileBytes;
+        private byte[] newFileBytes;
+
         public Form1()
         {
             InitializeComponent();
@@ -22,28 +25,43 @@ namespace ultrawide_me
             openFileDialog.ShowDialog();
         }
 
-        private void ProcessFile(object sender, CancelEventArgs e)
+        private void GetFileInformation(object sender, CancelEventArgs e)
         {
-            // TODO: Move all this logic
-            var hex = BitConverter.ToString(File.ReadAllBytes(openFileDialog.FileName));
-
-            MessageBox.Show("Opened " + openFileDialog.FileName);
-
+            // TODO: Error handling
+            openedFileBytes = File.ReadAllBytes(openFileDialog.FileName);
             openFileNameLabel.Text = openFileDialog.SafeFileName;
+            convertButton.Enabled = true;
+        }
 
-            if (hex.Contains(sixteenByNineHexValue))
+        private void ProcessFile(object sender, EventArgs e)
+        {
+            if (openedFileBytes != null && openedFileBytes.Length > 0)
             {
-                hex = hex.Replace(sixteenByNineHexValue, "8E-E3-18-40");
+                var openedFileHexValue = BitConverter.ToString(openedFileBytes);
+                if (openedFileHexValue.Contains(sixteenByNineHexValue))
+                {
+                    // TODO: Support other monitor sizes
+                    // TODO: Modify to support other games
+                    openedFileHexValue = openedFileHexValue.Replace(sixteenByNineHexValue, "8E-E3-18-40");
+                    newFileBytes = openedFileHexValue.Split('-').Select(hexValue => Convert.ToByte(hexValue, 16)).ToArray();
+                    saveButton.Enabled = true;
+                }
+                else
+                {
+                    MessageBox.Show("Could not convert");
+                }
             }
+        }
 
-            var newFileBytes = hex.Split('-').Select(hexValue => Convert.ToByte(hexValue, 16)).ToArray();
-
+        private void ShowSaveDialog(object sender, EventArgs e)
+        {
             saveFileDialog.FileName = openFileDialog.SafeFileName;
             saveFileDialog.ShowDialog();
+        }
 
+        private void SaveFile(object sender, CancelEventArgs e)
+        {
             File.WriteAllBytes(saveFileDialog.FileName, newFileBytes);
-
-            MessageBox.Show("Saved " + saveFileDialog.FileName);
         }
     }
 }
