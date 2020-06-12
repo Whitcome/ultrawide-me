@@ -16,5 +16,15 @@ namespace ultrawide_me
         {
             InitializeComponent();
         }
+
+        private void OpenFile(object sender, EventArgs e)
+        {
+            openFileDialog.ShowDialog();
+        }
+
+        private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
+        {
+
+        }
     }
 }

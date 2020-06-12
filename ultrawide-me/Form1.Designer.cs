@@ -28,7 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.openButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
+            // 
+            // openFileDialog
+            // 
+            this.openFileDialog.FileName = "gameFile";
+            this.openFileDialog.Filter = "EXE Files|*.exe";
+            this.openFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
+            // 
+            // openButton
+            // 
+            this.openButton.Location = new System.Drawing.Point(57, 356);
+            this.openButton.Name = "openButton";
+            this.openButton.Size = new System.Drawing.Size(150, 60);
+            this.openButton.TabIndex = 0;
+            this.openButton.Text = "Open File";
+            this.openButton.UseVisualStyleBackColor = true;
+            this.openButton.Click += new System.EventHandler(this.OpenFile);
             // 
             // Form1
             // 
@@ -36,6 +54,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.openButton);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
@@ -43,6 +62,9 @@
         }
 
         #endregion
+
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.Button openButton;
     }
 }
 
