@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace ultrawide_me
@@ -29,11 +26,24 @@ namespace ultrawide_me
         {
             // TODO: Move all this logic
             var hex = BitConverter.ToString(File.ReadAllBytes(openFileDialog.FileName));
+
+            MessageBox.Show("Opened " + openFileDialog.FileName);
+
+            openFileNameLabel.Text = openFileDialog.SafeFileName;
+
             if (hex.Contains(sixteenByNineHexValue))
             {
-                hex.Replace(sixteenByNineHexValue, "8E-E3-18-40");
+                hex = hex.Replace(sixteenByNineHexValue, "8E-E3-18-40");
             }
-            MessageBox.Show("Opened " + openFileDialog.FileName);
+
+            var newFileBytes = hex.Split('-').Select(hexValue => Convert.ToByte(hexValue, 16)).ToArray();
+
+            saveFileDialog.FileName = openFileDialog.SafeFileName;
+            saveFileDialog.ShowDialog();
+
+            File.WriteAllBytes(saveFileDialog.FileName, newFileBytes);
+
+            MessageBox.Show("Saved " + saveFileDialog.FileName);
         }
     }
 }
