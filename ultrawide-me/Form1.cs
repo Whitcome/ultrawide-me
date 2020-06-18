@@ -1,23 +1,21 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Data;
 using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace ultrawide_me
 {
     public partial class Form1 : Form
     {
-        private const string sixteenByNineHexValue = "39-8E-E3-3F";
-
+        readonly ConversionService conversionService;
+        
         private byte[] openedFileBytes;
         private byte[] newFileBytes;
 
         public Form1()
         {
             InitializeComponent();
+            conversionService = new ConversionService();
         }
 
         private void OpenFile(object sender, EventArgs e)
@@ -35,22 +33,8 @@ namespace ultrawide_me
 
         private void ProcessFile(object sender, EventArgs e)
         {
-            if (openedFileBytes != null && openedFileBytes.Length > 0)
-            {
-                var openedFileHexValue = BitConverter.ToString(openedFileBytes);
-                if (openedFileHexValue.Contains(sixteenByNineHexValue))
-                {
-                    // TODO: Support other monitor sizes
-                    // TODO: Modify to support other games
-                    openedFileHexValue = openedFileHexValue.Replace(sixteenByNineHexValue, "8E-E3-18-40");
-                    newFileBytes = openedFileHexValue.Split('-').Select(hexValue => Convert.ToByte(hexValue, 16)).ToArray();
-                    saveButton.Enabled = true;
-                }
-                else
-                {
-                    MessageBox.Show("Could not convert");
-                }
-            }
+            newFileBytes = conversionService.ProcessFile(openedFileBytes);
+            saveButton.Enabled = true;
         }
 
         private void ShowSaveDialog(object sender, EventArgs e)
@@ -62,6 +46,17 @@ namespace ultrawide_me
         private void SaveFile(object sender, CancelEventArgs e)
         {
             File.WriteAllBytes(saveFileDialog.FileName, newFileBytes);
+            Reset();
+        }
+
+        private void Reset()
+        {
+            openFileNameLabel.Text = "No file selected";
+            convertButton.Enabled = false;
+            saveButton.Enabled = false;
+            openedFileBytes = null;
+            newFileBytes = null;
+            GC.Collect();
         }
     }
 }
