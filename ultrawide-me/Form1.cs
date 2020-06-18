@@ -9,8 +9,7 @@ namespace ultrawide_me
     {
         readonly ConversionService conversionService;
         
-        private byte[] openedFileBytes;
-        private byte[] newFileBytes;
+        private byte[] fileBytes;
 
         public Form1()
         {
@@ -26,14 +25,15 @@ namespace ultrawide_me
         private void GetFileInformation(object sender, CancelEventArgs e)
         {
             // TODO: Error handling
-            openedFileBytes = File.ReadAllBytes(openFileDialog.FileName);
+            fileBytes = File.ReadAllBytes(openFileDialog.FileName);
+            GC.Collect();
             openFileNameLabel.Text = openFileDialog.SafeFileName;
             convertButton.Enabled = true;
         }
 
         private void ProcessFile(object sender, EventArgs e)
         {
-            newFileBytes = conversionService.ProcessFile(openedFileBytes);
+            conversionService.ProcessFile(fileBytes, 3440, 1440);
             saveButton.Enabled = true;
         }
 
@@ -45,7 +45,7 @@ namespace ultrawide_me
 
         private void SaveFile(object sender, CancelEventArgs e)
         {
-            File.WriteAllBytes(saveFileDialog.FileName, newFileBytes);
+            File.WriteAllBytes(saveFileDialog.FileName, fileBytes);
             Reset();
         }
 
@@ -54,9 +54,7 @@ namespace ultrawide_me
             openFileNameLabel.Text = "No file selected";
             convertButton.Enabled = false;
             saveButton.Enabled = false;
-            openedFileBytes = null;
-            newFileBytes = null;
-            GC.Collect();
+            fileBytes = null;
         }
     }
 }

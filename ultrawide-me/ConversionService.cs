@@ -1,27 +1,33 @@
 ﻿using System;
-using System.Linq;
-using System.Windows.Forms;
 
 namespace ultrawide_me
 {
     class ConversionService
     {
-        private const string sixteenByNineHexValue = "39-8E-E3-3F";
+        private readonly byte[] bytesToReplace;
 
-        public byte[] ProcessFile(byte[] openedFileBytes)
+        public ConversionService()
         {
-            var openedFileHexValue = BitConverter.ToString(openedFileBytes);
-            if (openedFileHexValue.Contains(sixteenByNineHexValue))
+            float width = 1920;
+            float height = 1080;
+            bytesToReplace = BitConverter.GetBytes(width / height);
+        }
+
+        public void ProcessFile(byte[] openedFileBytes, float width, float height)
+        {
+            var resolutionBytes = BitConverter.GetBytes(width / height);
+            for (int i = 0; i < openedFileBytes.Length - 3; i++)
             {
-                // TODO: Support other monitor sizes
-                // TODO: Modify to support other games
-                openedFileHexValue = openedFileHexValue.Replace(sixteenByNineHexValue, "8E-E3-18-40");
-                return openedFileHexValue.Split('-').Select(hexValue => Convert.ToByte(hexValue, 16)).ToArray();
-            }
-            else
-            {
-                MessageBox.Show("Could not convert");
-                return openedFileBytes;
+                if (openedFileBytes[i] == bytesToReplace[0] &&
+                    openedFileBytes[i + 1] == bytesToReplace[1] &&
+                    openedFileBytes[i + 2] == bytesToReplace[2] &&
+                    openedFileBytes[i + 3] == bytesToReplace[3])
+                {
+                    openedFileBytes[i] = resolutionBytes[0];
+                    openedFileBytes[i + 1] = resolutionBytes[1];
+                    openedFileBytes[i + 2] = resolutionBytes[2];
+                    openedFileBytes[i + 3] = resolutionBytes[3];
+                }
             }
         }
     }
