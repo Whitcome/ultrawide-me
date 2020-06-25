@@ -34,6 +34,7 @@
             this.openFileNameLabel = new System.Windows.Forms.Label();
             this.convertButton = new System.Windows.Forms.Button();
             this.saveButton = new System.Windows.Forms.Button();
+            this.widthMaskedTextBox = new System.Windows.Forms.MaskedTextBox();
             this.SuspendLayout();
             // 
             // openFileDialog
@@ -92,12 +93,24 @@
             this.saveButton.UseVisualStyleBackColor = true;
             this.saveButton.Click += new System.EventHandler(this.ShowSaveDialog);
             // 
+            // widthMaskedTextBox
+            // 
+            this.widthMaskedTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.widthMaskedTextBox.Location = new System.Drawing.Point(312, 33);
+            this.widthMaskedTextBox.Mask = "000000";
+            this.widthMaskedTextBox.Name = "widthMaskedTextBox";
+            this.widthMaskedTextBox.PromptChar = ' ';
+            this.widthMaskedTextBox.Size = new System.Drawing.Size(100, 24);
+            this.widthMaskedTextBox.TabIndex = 4;
+            this.widthMaskedTextBox.ValidatingType = typeof(int);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.InactiveBorder;
+            this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(800, 170);
+            this.Controls.Add(this.widthMaskedTextBox);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.convertButton);
             this.Controls.Add(this.openFileNameLabel);
@@ -117,6 +130,7 @@
         private System.Windows.Forms.Label openFileNameLabel;
         private System.Windows.Forms.Button convertButton;
         private System.Windows.Forms.Button saveButton;
+        private System.Windows.Forms.MaskedTextBox widthMaskedTextBox;
     }
 }
 
