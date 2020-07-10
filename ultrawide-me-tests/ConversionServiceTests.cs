@@ -4,10 +4,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace ultrawide_me_tests
 {
     [TestClass]
-    public class UnitTest1
+    public class ConversionServiceTests
     {
         [TestMethod]
-        public void TestMethod1()
+        public void ProcessFile_2560x1440_Return()
         {
         }
     }
